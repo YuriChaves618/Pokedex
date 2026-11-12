@@ -28,16 +28,20 @@ async function cards(list,el,append){
   const ps=(await Promise.all(list.map(x=>get(x).catch(()=>null)))).filter(Boolean);
   const h=ps.map(card).join('');append?el.insertAdjacentHTML('beforeend',h):el.innerHTML=h}
 
-async function catalog(){
-  const list=query?all.filter(p=>p.name.includes(query)||String(p.id)===query):all;
-  $('#app').innerHTML=`<div class="head"><h2>${query?`resultados para “${query}”`:'catálogo'}</h2><p>${list.length} pokémon</p></div><div class="grid" id="g"></div><div class="more" id="mr"></div>`;
-  const g=$('#g');
-  if(!list.length){g.outerHTML=`<div class="empty">${ball}Nenhum pokémon encontrado. Confira o nome ou tente só o começo dele.</div>`;return}
-  g.innerHTML='<div class="skel"></div>'.repeat(8);
-  const draw=async(from,to,append)=>{await cards(list.slice(from,to).map(p=>p.id),g,append);
+let tf='',ctk=0;const tcache={};
+async function typeIds(t){if(!tcache[t]){const j=await (await fetch(`${API}/type/${t}`)).json();tcache[t]=new Set(j.pokemon.map(x=>+x.pokemon.url.split('/').filter(Boolean).pop()))}return tcache[t]}
+const tbar=()=>`<div class="tfs" role="group" aria-label="Filtrar por tipo"><button class="tf ${tf?'':'on'}" data-tf="">Todos</button>${Object.keys(TC).map(t=>`<button class="tf ${tf===t?'on':''}" data-tf="${t}" style="--c:${TC[t]}">${TP[t]}</button>`).join('')}</div>`;
+async function catalog(){const tk=++ctk;
+  $('#app').innerHTML=`<div class="head"><h2>${query?`resultados para “${query}”`:tf?`tipo ${TP[tf]}`:'catálogo'}</h2><p id="cc"></p></div>${tbar()}<div class="grid" id="g">${'<div class="skel"></div>'.repeat(8)}</div><div class="more" id="mr"></div>`;
+  let list=query?all.filter(p=>p.name.includes(query)||String(p.id)===query):all;
+  if(tf){try{const ids=await typeIds(tf);list=list.filter(p=>ids.has(p.id))}catch(e){toast('Não foi possível filtrar agora');tf='';return catalog()}}
+  if(tk!==ctk)return;
+  $('#cc').textContent=`${list.length} pokémon`;const g=$('#g');
+  if(!list.length){g.outerHTML=`<div class="empty">${ball}Nenhum pokémon encontrado${tf?' com esse tipo':''}. Confira o nome ou tente outro filtro.</div>`;return}
+  const draw=async(from,to,append)=>{await cards(list.slice(from,to).map(p=>p.id),g,append);if(tk!==ctk)return;
     $('#mr').innerHTML=to<list.length?'<button class="btn k" id="lm">Carregar mais</button>':'';
     const b=$('#lm');if(b)b.onclick=async()=>{b.disabled=true;b.textContent='Carregando...';const n=shown;shown+=24;await draw(n,shown,true)}};
-  if(!query)shown=24;await draw(0,Math.min(shown,list.length),false)}
+  if(!query)shown=Math.max(shown,24);await draw(0,Math.min(shown,list.length),false)}
 
 async function favorites(){
   $('#app').innerHTML=`<div class="head"><h2>favoritos</h2><p>${favs.length} salvos</p></div><div class="grid" id="g"></div>`;
@@ -86,6 +90,7 @@ function toggleFav(id){id=+id;const i=favs.indexOf(id);i>-1?favs.splice(i,1):fav
 
 document.addEventListener('click',e=>{
   const f=e.target.closest('[data-fav]'),c=e.target.closest('[data-cmp]'),k=e.target.closest('.card'),t=e.target.closest('nav button');
+  const tfb=e.target.closest('[data-tf]');if(tfb){tf=tfb.dataset.tf;shown=24;catalog();return}
   const bb=e.target.closest('[data-bat],[data-brnd],[data-bgo],[data-bact],[data-bnew]');if(bb){batClick(bb);return}
   if(f){e.stopPropagation();toggleFav(f.dataset.fav)}else if(c){e.stopPropagation();addCmp(c.dataset.cmp)}
   else if(t)go(t.dataset.v);else if(k)open(k.dataset.id);

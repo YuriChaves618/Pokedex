@@ -7,6 +7,7 @@ Uma Pokédex web feita com HTML, CSS e JavaScript puros, com visual temático de
 ## Funcionalidades
 
 - **Catálogo:** os 1025 pokémons, com arte oficial, número e tipos, carregados aos poucos pelo botão "Carregar mais".
+- **Filtro por tipo:** botões para mostrar só os pokémons de um tipo (fogo, água, planta e os outros 15), que podem ser combinados com a busca.
 - **Busca:** campo para digitar o nome ou o número, com sugestões e filtro em tempo real.
 - **Aleatório:** botão que sorteia um pokémon e abre a ficha dele.
 - **Ficha do pokémon:** descrição, altura, peso, habilidades e barras de atributos.
@@ -21,6 +22,7 @@ Os dados vêm da [PokéAPI](https://pokeapi.co/), uma API pública e gratuita so
 - `GET /pokemon?limit=1025` para a lista de nomes
 - `GET /pokemon/{id ou nome}` para tipos, atributos, altura, peso e habilidades
 - `GET /pokemon-species/{id}` para a descrição
+- `GET /type/{nome}` para listar os pokémons de cada tipo (filtro)
 
 As imagens são as artes oficiais do repositório [PokeAPI/sprites](https://github.com/PokeAPI/sprites).
 

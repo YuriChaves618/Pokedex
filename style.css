@@ -122,3 +122,9 @@ dialog::backdrop{background:rgba(20,0,0,.6);backdrop-filter:blur(3px)}
 .slot>.num{display:block;margin-bottom:6px}
 @media(max-width:620px){.fh{grid-template-columns:1fr}.vs{grid-template-columns:1fr}.vsb{margin:-4px auto}.row{grid-template-columns:1fr 78px 1fr}.st{grid-template-columns:80px 34px 1fr}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* filtro por tipo */
+.tfs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}
+.tf{background:#fff;border:2px solid var(--c,var(--ink));color:var(--ink);border-radius:99px;padding:7px 14px;font-weight:700;font-size:14px;box-shadow:0 2px 0 rgba(0,0,0,.1);transition:transform .15s,background .15s,color .15s}
+.tf:hover{transform:translateY(-2px)}
+.tf.on{background:var(--c,var(--ink));color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.3)}
