@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pokédex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,800;125,900&family=DM+Sans:wght@400;500;700&family=Titan+One&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><symbol id="pb" viewBox="0 0 100 100"><circle cx="50" cy="50" r="47" fill="#fff" stroke="#1b1b1d" stroke-width="6"/><path d="M3 50a47 47 0 0 1 94 0z" fill="#e3350d" stroke="#1b1b1d" stroke-width="6" stroke-linejoin="round"/><path d="M3 50h94" stroke="#1b1b1d" stroke-width="8"/><circle cx="50" cy="50" r="14" fill="#fff" stroke="#1b1b1d" stroke-width="7"/><circle cx="50" cy="50" r="5" fill="#e4e7ec"/></symbol></svg>
+
+<header class="top">
+  <div class="bar">
+    <div class="brand"><svg class="pb"><use href="#pb"/></svg> Pokédex</div>
+    <nav role="tablist" aria-label="Seções">
+      <button role="tab" data-v="cat" aria-selected="true">Catálogo</button>
+      <button role="tab" data-v="fav" aria-selected="false">Favoritos <b id="nf">0</b></button>
+      <button role="tab" data-v="cmp" aria-selected="false">Comparar <b id="nc">0</b></button>
+      <button role="tab" data-v="bat" aria-selected="false">⚔ Batalha</button>
+    </nav>
+  </div>
+  <h1 aria-label="Pokédex">P<svg class="pb ball"><use href="#pb"/></svg>kédex</h1>
+  <p class="sub">Todos os pokémons, da primeira a última geração!</p>
+  <form class="search" id="sf" autocomplete="off">
+    <input id="q" type="search" list="names" placeholder="Digite o nome ou número do pokémon" aria-label="Buscar pokémon">
+    <datalist id="names"></datalist>
+    <button class="btn y" type="submit">Buscar</button>
+    <button class="btn k" type="button" id="rnd"><svg class="pb"><use href="#pb"/></svg> Aleatório</button>
+  </form>
+</header>
+<div class="divider"><i></i></div>
+<main id="app"></main>
+<dialog id="dlg"></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
